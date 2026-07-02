@@ -1,0 +1,136 @@
+/* Custom Stylesheet - JobHub Job Board App */
+
+:root {
+    --primary-color: #4f46e5;       /* Modern Indigo */
+    --primary-hover: #4338ca;
+    --success-color: #10b981;       /* Emerald Green */
+    --success-hover: #059669;
+    --dark-bg: #0f172a;             /* Slate 900 */
+    --body-font: 'Inter', sans-serif;
+    --border-radius: 12px;
+}
+
+body {
+    font-family: var(--body-font);
+    background-color: #f8fafc;
+    color: #334155;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Authentication Page Styling */
+.auth-body {
+    background: linear-gradient(135deg, #4f46e5 0%, #1e1b4b 100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.auth-card {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Left Sidebar Branding Styling */
+.auth-branding {
+    background: linear-gradient(180deg, rgba(79, 70, 229, 0.9) 0%, rgba(30, 27, 75, 0.95) 100%), 
+                url('../images/auth-bg.jpg') center/cover no-repeat;
+    position: relative;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.auth-branding::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* Form Styles & Focus Effects */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+    background-color: #fff !important;
+}
+
+.input-group-text {
+    border: 1px solid #dee2e6;
+}
+
+/* Custom Buttons Styling */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    transition: all 0.25s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    transition: all 0.25s ease;
+}
+
+.btn-success:hover {
+    background-color: var(--success-hover);
+    border-color: var(--success-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+/* Radio Button Account Picker Styling */
+.btn-check:checked + .btn-outline-secondary {
+    border-color: var(--primary-color);
+    background-color: rgba(79, 70, 229, 0.05);
+    color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.btn-outline-secondary {
+    border-color: #e2e8f0;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #f1f5f9;
+    color: #475569;
+    border-color: #cbd5e1;
+}
+
+/* Animated Utilities */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.animate-bounce {
+    animation: bounce 3s infinite ease-in-out;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive adjustements */
+@media (max-width: 991.98px) {
+    .auth-card {
+        margin: 15px;
+    }
+}

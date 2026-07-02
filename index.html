@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JobHub - Login & Register</title>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap 5 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <!-- Custom CSS -->
+    <link href="assets/css/styles.css" rel="stylesheet" />
+  </head>
+  <body class="auth-body">
+    <div
+      class="auth-container container d-flex align-items-center justify-content-center min-vh-100 py-5"
+    >
+      <div
+        class="card auth-card shadow-lg border-0 overflow-hidden w-100"
+        style="max-width: 900px"
+      >
+        <div class="row g-0">
+          <!-- Branding Left Column -->
+          <div
+            class="col-lg-5 d-none d-lg-flex flex-column justify-content-between auth-branding p-5 text-white"
+          >
+            <div>
+              <div class="d-flex align-items-center mb-4">
+                <i
+                  class="fa-solid fa-briefcase fa-2x me-2 text-warning animate-bounce"
+                ></i>
+                <span class="fs-3 fw-bold tracking-wide">JobHub</span>
+              </div>
+              <h2 class="fw-bold mb-3">Find Your Dream Job Today</h2>
+              <p class="text-white-50">
+                Connect with top employers or discover qualified developers
+                matching your project scope.
+              </p>
+            </div>
+            <div class="auth-footer text-white-50 small">
+              &copy; 2026 JobHub. All rights reserved.
+            </div>
+          </div>
+
+          <!-- Form Right Column -->
+          <div
+            class="col-lg-7 p-4 p-md-5 bg-white d-flex flex-column justify-content-center"
+          >
+            <!-- Alert Message Container -->
+            <div id="alert-container" class="d-none"></div>
+
+            <!-- LOGIN VIEW -->
+            <div id="login-view">
+              <div class="mb-4">
+                <h3 class="fw-bold text-dark mb-1">Welcome Back!</h3>
+                <p class="text-muted">
+                  Sign in to search for opportunities and manage your dashboard.
+                </p>
+              </div>
+
+              <form id="login-form" novalidate>
+                <div class="mb-3">
+                  <label
+                    for="login-email"
+                    class="form-label fw-medium text-secondary"
+                    >Email Address</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0"
+                      ><i class="fa-solid fa-envelope text-muted"></i
+                    ></span>
+                    <input
+                      type="email"
+                      class="form-control bg-light border-start-0 ps-0"
+                      id="login-email"
+                      required
+                      placeholder="name@company.com"
+                    />
+                    <div class="invalid-feedback">
+                      Please enter a valid email address.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-4">
+                  <div class="d-flex justify-content-between mb-1">
+                    <label
+                      for="login-password"
+                      class="form-label fw-medium text-secondary mb-0"
+                      >Password</label
+                    >
+                  </div>
+                  <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0"
+                      ><i class="fa-solid fa-lock text-muted"></i
+                    ></span>
+                    <input
+                      type="password"
+                      class="form-control bg-light border-start-0 ps-0"
+                      id="login-password"
+                      required
+                      placeholder="Enter password"
+                    />
+                    <div class="invalid-feedback">Password is required.</div>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  class="btn btn-primary w-100 py-2.5 mb-3 fw-semibold"
+                >
+                  Sign In <i class="fa-solid fa-right-to-bracket ms-1"></i>
+                </button>
+              </form>
+
+              <div class="text-center mt-4">
+                <p class="mb-0 text-muted">
+                  New to JobHub?
+                  <a
+                    href="#"
+                    id="toggle-to-register"
+                    class="fw-semibold text-primary text-decoration-none"
+                    >Create an Account</a
+                  >
+                </p>
+              </div>
+            </div>
+
+            <!-- REGISTER VIEW (Hidden by Default) -->
+            <div id="register-view" class="d-none">
+              <div class="mb-4">
+                <h3 class="fw-bold text-dark mb-1">Get Started</h3>
+                <p class="text-muted">
+                  Create your account to unlock professional matching tools.
+                </p>
+              </div>
+
+              <form id="register-form" novalidate>
+                <!-- Account Type Picker -->
+                <div class="mb-3">
+                  <label class="form-label fw-medium text-secondary"
+                    >I want to join as a:</label
+                  >
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <input
+                        type="radio"
+                        class="btn-check"
+                        name="role"
+                        id="role-seeker"
+                        value="seeker"
+                        checked
+                      />
+                      <label
+                        class="btn btn-outline-secondary w-100 py-2.5 d-flex flex-column align-items-center"
+                        for="role-seeker"
+                      >
+                        <i class="fa-solid fa-user-tie mb-1"></i>
+                        Job Seeker
+                      </label>
+                    </div>
+                    <div class="col-6">
+                      <input
+                        type="radio"
+                        class="btn-check"
+                        name="role"
+                        id="role-employer"
+                        value="employer"
+                      />
+                      <label
+                        class="btn btn-outline-secondary w-100 py-2.5 d-flex flex-column align-items-center"
+                        for="role-employer"
+                      >
+                        <i class="fa-solid fa-building mb-1"></i>
+                        Employer
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Shared Inputs -->
+                <div class="mb-3">
+                  <label
+                    for="reg-name"
+                    class="form-label fw-medium text-secondary"
+                    >Full Name</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0"
+                      ><i class="fa-solid fa-user text-muted"></i
+                    ></span>
+                    <input
+                      type="text"
+                      class="form-control bg-light border-start-0 ps-0"
+                      id="reg-name"
+                      required
+                      placeholder="John Doe"
+                    />
+                    <div class="invalid-feedback">Full name is required.</div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label
+                    for="reg-email"
+                    class="form-label fw-medium text-secondary"
+                    >Email Address</label
+                  >
+                  <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0"
+                      ><i class="fa-solid fa-envelope text-muted"></i
+                    ></span>
+                    <input
+                      type="email"
+                      class="form-control bg-light border-start-0 ps-0"
+                      id="reg-email"
+                      required
+                      placeholder="john@example.com"
+                    />
+                    <div class="invalid-feedback">
+                      Please enter a valid email address.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Employer-Specific Dynamic Inputs (Hidden initially) -->
+                <div id="employer-fields" class="d-none animate-fade-in">
+                  <div class="mb-3">
+                    <label
+                      for="company-name"
+                      class="form-label fw-medium text-secondary"
+                      >Company Name</label
+                    >
+                    <div class="input-group">
+                      <span class="input-group-text bg-light border-end-0"
+                        ><i class="fa-solid fa-briefcase text-muted"></i
+                      ></span>
+                      <input
+                        type="text"
+                        class="form-control bg-light border-start-0 ps-0"
+                        id="company-name"
+                        placeholder="Acme Corporation"
+                      />
+                      <div class="invalid-feedback">
+                        Company name is required.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label
+                      for="company-website"
+                      class="form-label fw-medium text-secondary"
+                      >Company Website (Optional)</label
+                    >
+                    <div class="input-group">
+                      <span class="input-group-text bg-light border-end-0"
+                        ><i class="fa-solid fa-globe text-muted"></i
+                      ></span>
+                      <input
+                        type="url"
+                        class="form-control bg-light border-start-0 ps-0"
+                        id="company-website"
+                        placeholder="https://acme.com"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row g-2 mb-4">
+                  <div class="col-md-6">
+                    <label
+                      for="reg-password"
+                      class="form-label fw-medium text-secondary"
+                      >Password</label
+                    >
+                    <div class="input-group">
+                      <span class="input-group-text bg-light border-end-0"
+                        ><i class="fa-solid fa-lock text-muted"></i
+                      ></span>
+                      <input
+                        type="password"
+                        class="form-control bg-light border-start-0 ps-0"
+                        id="reg-password"
+                        required
+                        placeholder="Min 6 characters"
+                      />
+                      <div class="invalid-feedback">
+                        Password must be at least 6 characters.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label
+                      for="reg-confirm-password"
+                      class="form-label fw-medium text-secondary"
+                      >Confirm Password</label
+                    >
+                    <div class="input-group">
+                      <span class="input-group-text bg-light border-end-0"
+                        ><i class="fa-solid fa-lock text-muted"></i
+                      ></span>
+                      <input
+                        type="password"
+                        class="form-control bg-light border-start-0 ps-0"
+                        id="reg-confirm-password"
+                        required
+                        placeholder="Re-enter password"
+                      />
+                      <div class="invalid-feedback">Passwords must match.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  class="btn btn-success w-100 py-2.5 mb-3 fw-semibold"
+                >
+                  Create Account <i class="fa-solid fa-user-plus ms-1"></i>
+                </button>
+              </form>
+
+              <div class="text-center mt-3">
+                <p class="mb-0 text-muted">
+                  Already have an account?
+                  <a
+                    href="#"
+                    id="toggle-to-login"
+                    class="fw-semibold text-primary text-decoration-none"
+                    >Sign In Here</a
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Validation & Auth Controller Actions -->
+    <script src="assets/js/validation.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>

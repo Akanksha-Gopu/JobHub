@@ -1,0 +1,17 @@
+# Ignore uploaded resumes
+assets/uploads/resumes/*
+!assets/uploads/resumes/.gitkeep
+
+# Environment files
+.env
+
+# IDE settings
+.vscode/
+.idea/
+
+# Log files
+*.log
+
+# Operating System files
+Thumbs.db
+.DS_Store

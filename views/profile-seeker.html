@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobHub - Candidate Profile</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3 mb-4">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="jobs.html">
+                <i class="fa-solid fa-briefcase text-warning me-2 animate-bounce"></i>
+                <span class="fw-bold tracking-wide">JobHub</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link fw-medium" href="jobs.html">Browse Jobs</a></li>
+                    <li class="nav-item"><a class="nav-link fw-medium" href="dashboard-seeker.html">My Applications</a></li>
+                    <li class="nav-item"><a class="nav-link active fw-medium" href="profile-seeker.html">My Profile</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span class="text-white-50 me-3">Welcome, <strong class="text-white" id="user-name-display">Candidate</strong></span>
+                    <button id="logout-btn" class="btn btn-outline-light btn-sm fw-semibold"><i class="fa-solid fa-right-from-bracket me-1"></i> Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                
+                <!-- Main Header Card -->
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h4 class="fw-bold text-dark mb-0"><i class="fa-solid fa-user-gear text-primary me-2"></i>My Profile Settings</h4>
+                </div>
+
+                <!-- Alert Banner -->
+                <div id="profile-alert" class="alert d-none mb-4"></div>
+
+                <!-- Profile Form Card -->
+                <div class="card border-0 shadow-sm p-4 p-md-5">
+                    <form id="profile-form" novalidate>
+                        
+                        <!-- Full Name -->
+                        <div class="mb-3">
+                            <label for="profile-name" class="form-label fw-semibold text-secondary small">Full Name</label>
+                            <input type="text" class="form-control" id="profile-name" required placeholder="John Doe">
+                            <div class="invalid-feedback">Full name is required.</div>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="mb-3">
+                            <label for="profile-phone" class="form-label fw-semibold text-secondary small">Phone Number</label>
+                            <input type="tel" class="form-control" id="profile-phone" placeholder="+1 234 567 890">
+                        </div>
+
+                        <!-- Professional Bio -->
+                        <div class="mb-3">
+                            <label for="profile-bio" class="form-label fw-semibold text-secondary small">Professional Summary / Bio</label>
+                            <textarea class="form-control" id="profile-bio" rows="4" placeholder="Briefly introduce yourself and outline your experience..."></textarea>
+                        </div>
+
+                        <!-- Skills -->
+                        <div class="mb-4">
+                            <label for="profile-skills" class="form-label fw-semibold text-secondary small">Skills (comma separated)</label>
+                            <input type="text" class="form-control" id="profile-skills" placeholder="e.g. JavaScript, PHP, Bootstrap, PostgreSQL">
+                            <div class="form-text text-muted">Separate skills with commas. These will help employers find your profile matches.</div>
+                        </div>
+
+                        <!-- Resume Upload -->
+                        <div class="mb-4 p-3 bg-light rounded border">
+                            <label class="form-label fw-semibold text-secondary small d-block">Resume Document (PDF only, max 5MB)</label>
+                            
+                            <!-- Existing resume preview -->
+                            <div id="existing-resume-container" class="d-none mb-3">
+                                <div class="alert alert-success d-flex align-items-center justify-content-between p-2.5 mb-0 border">
+                                    <span class="small fw-semibold text-success"><i class="fa-solid fa-file-pdf fa-lg me-2 text-danger"></i>Resume document is active</span>
+                                    <a id="view-resume-link" href="#" target="_blank" class="btn btn-outline-success btn-xs fw-semibold"><i class="fa-solid fa-eye me-1"></i>View resume</a>
+                                </div>
+                            </div>
+
+                            <input type="file" class="form-control mt-2" id="profile-resume" accept=".pdf">
+                            <div class="invalid-feedback">Please select a valid PDF file under 5MB.</div>
+                            <div class="form-text text-muted">Uploading a new file will overwrite your previously saved resume document.</div>
+                        </div>
+
+                        <!-- Submit Buttons -->
+                        <button type="submit" id="save-profile-btn" class="btn btn-primary fw-semibold px-4 py-2">
+                            Save Changes <i class="fa-solid fa-cloud-arrow-up ms-1"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script Logic -->
+    <script>
+        $(document).ready(function() {
+            // 1. Session Protection Guard & Seeker Check
+            $.ajax({
+                url: '../api/controllers/auth.php?action=me',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status !== 'success') {
+                        window.location.href = '../index.html';
+                    } else {
+                        const user = response.data;
+                        if (user.role !== 'seeker') {
+                            // Redirect employers to dashboard
+                            window.location.href = 'dashboard-employer.html';
+                            return;
+                        }
+                        
+                        $('#user-name-display').text(user.full_name);
+                        
+                        // Load Profile values
+                        loadProfileData();
+                    }
+                },
+                error: function() {
+                    window.location.href = '../index.html';
+                }
+            });
+
+            // 2. Fetch Profile Info
+            function loadProfileData() {
+                $.ajax({
+                    url: '../api/controllers/users.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            const data = response.data;
+                            
+                            $('#profile-name').val(data.full_name);
+                            $('#profile-phone').val(data.phone || '');
+                            $('#profile-bio').val(data.bio || '');
+                            $('#profile-skills').val(data.skills || '');
+                            
+                            // Check resume document
+                            if (data.resume_path) {
+                                $('#existing-resume-container').removeClass('d-none');
+                                $('#view-resume-link').attr('href', '../' + data.resume_path);
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 3. Save Profile Form Submit (AJAX multipart upload)
+            $('#profile-form').submit(function(e) {
+                e.preventDefault();
+                $('#profile-alert').addClass('d-none').removeClass('alert-danger alert-success');
+
+                const fullName = $('#profile-name').val().trim();
+                const phone = $('#profile-phone').val().trim();
+                const bio = $('#profile-bio').val().trim();
+                const skills = $('#profile-skills').val().trim();
+                const fileInput = $('#profile-resume')[0];
+
+                // Client Side Validation
+                if (fullName === '') {
+                    $('#profile-name').addClass('is-invalid');
+                    return;
+                }
+                $('#profile-name').removeClass('is-invalid');
+
+                if (fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    if (file.type !== 'application/pdf') {
+                        $('#profile-resume').addClass('is-invalid');
+                        alert('Resume must be a PDF file.');
+                        return;
+                    }
+                    if (file.size > 5 * 1024 * 1024) {
+                        $('#profile-resume').addClass('is-invalid');
+                        alert('Resume size must not exceed 5MB.');
+                        return;
+                    }
+                    $('#profile-resume').removeClass('is-invalid');
+                }
+
+                // Prepare Form Data
+                const formData = new FormData();
+                formData.append('full_name', fullName);
+                formData.append('phone', phone);
+                formData.append('bio', bio);
+                formData.append('skills', skills);
+                
+                if (fileInput.files.length > 0) {
+                    formData.append('resume', fileInput.files[0]);
+                }
+
+                $('#save-profile-btn').prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin me-1"></i> Saving...');
+
+                $.ajax({
+                    url: '../api/controllers/users.php',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#save-profile-btn').prop('disabled', false).html('Save Changes <i class="fa-solid fa-cloud-arrow-up ms-1"></i>');
+                        
+                        if (response.status === 'success') {
+                            $('#profile-alert').removeClass('d-none alert-danger').addClass('alert-success').html('<strong>Success!</strong> Profile updated successfully.');
+                            // Reload profile values to update resume view link
+                            loadProfileData();
+                            // Reset file input
+                            $('#profile-resume').val('');
+                            // Update display name
+                            $('#user-name-display').text(fullName);
+                        } else {
+                            $('#profile-alert').removeClass('d-none alert-success').addClass('alert-danger').text(response.message);
+                        }
+                    },
+                    error: function() {
+                        $('#save-profile-btn').prop('disabled', false).html('Save Changes <i class="fa-solid fa-cloud-arrow-up ms-1"></i>');
+                        $('#profile-alert').removeClass('d-none').addClass('alert-danger').text('An error occurred on the server. Please try again.');
+                    }
+                });
+            });
+
+            // Logout Action
+            $('#logout-btn').click(function() {
+                $.ajax({
+                    url: '../api/controllers/auth.php?action=logout',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        window.location.href = '../index.html';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobHub - Browse Jobs</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../assets/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3 mb-4">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="jobs.html">
+                <i class="fa-solid fa-briefcase text-warning me-2 animate-bounce"></i>
+                <span class="fw-bold tracking-wide">JobHub</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active fw-medium" href="jobs.html">Browse Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="dashboard-seeker.html" id="seeker-dash-link">My Applications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium" href="profile-seeker.html" id="seeker-profile-link">My Profile</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <span class="text-white-50 me-3">Welcome, <strong class="text-white" id="user-name-display">Candidate</strong></span>
+                    <button id="logout-btn" class="btn btn-outline-light btn-sm fw-semibold"><i class="fa-solid fa-right-from-bracket me-1"></i> Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Grid -->
+    <div class="container pb-5">
+        <div class="row g-4">
+            
+            <!-- Filters Sidebar -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm p-4">
+                    <h5 class="fw-bold text-dark mb-3"><i class="fa-solid fa-sliders me-2 text-primary"></i>Filter Job Listings</h5>
+                    
+                    <form id="filters-form">
+                        <!-- Keyword Search -->
+                        <div class="mb-3">
+                            <label for="search-input" class="form-label fw-semibold text-secondary small">Keyword Search</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                                <input type="text" class="form-control border-start-0 ps-0" id="search-input" placeholder="e.g., Engineer, Designer">
+                            </div>
+                        </div>
+
+                        <!-- Category Selector -->
+                        <div class="mb-3">
+                            <label for="category-select" class="form-label fw-semibold text-secondary small">Category</label>
+                            <select class="form-select" id="category-select">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+
+                        <!-- Location Search -->
+                        <div class="mb-3">
+                            <label for="location-input" class="form-label fw-semibold text-secondary small">Location</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-location-dot text-muted"></i></span>
+                                <input type="text" class="form-control border-start-0 ps-0" id="location-input" placeholder="e.g., Remote, London">
+                            </div>
+                        </div>
+
+                        <!-- Job Type -->
+                        <div class="mb-4">
+                            <label for="job-type-select" class="form-label fw-semibold text-secondary small">Job Type</label>
+                            <select class="form-select" id="job-type-select">
+                                <option value="">All Types</option>
+                                <option value="full-time">Full-Time</option>
+                                <option value="part-time">Part-Time</option>
+                                <option value="contract">Contract</option>
+                                <option value="remote">Remote</option>
+                            </select>
+                        </div>
+
+                        <!-- Filter Actions -->
+                        <button type="submit" class="btn btn-primary w-100 fw-semibold mb-2">Apply Filters</button>
+                        <button type="button" id="reset-filters-btn" class="btn btn-outline-secondary w-100 fw-semibold">Reset All</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Job Cards Results -->
+            <div class="col-lg-8">
+                <!-- Header Stats -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-dark mb-0"><span id="jobs-count">0</span> Job Listings Found</h5>
+                </div>
+
+                <!-- Alert/Loading State -->
+                <div id="jobs-alert" class="alert alert-info text-center py-4 d-none">
+                    <i class="fa-solid fa-spinner fa-spin fa-2x mb-2 text-primary"></i>
+                    <p class="mb-0 fw-medium">Searching for job matches...</p>
+                </div>
+
+                <!-- Empty State -->
+                <div id="jobs-empty" class="card border-0 shadow-sm p-5 text-center d-none">
+                    <i class="fa-solid fa-folder-open fa-3x mb-3 text-muted"></i>
+                    <h5 class="fw-bold">No Jobs Found</h5>
+                    <p class="text-muted">Try adjusting your filters or search keywords.</p>
+                </div>
+
+                <!-- Listings Container -->
+                <div id="jobs-container" class="d-flex flex-column gap-3">
+                    <!-- Dynamic Job Cards will insert here -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script Logic -->
+    <script>
+        $(document).ready(function() {
+            // 1. Session Protection Guard
+            $.ajax({
+                url: '../api/controllers/auth.php?action=me',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status !== 'success') {
+                        window.location.href = '../index.html';
+                    } else {
+                        // User exists
+                        $('#user-name-display').text(response.data.full_name);
+                        
+                        // If Employer logs in, adapt navigation links
+                        if (response.data.role === 'employer') {
+                            $('#seeker-dash-link').text('My Dashboard').attr('href', 'dashboard-employer.html');
+                            $('#seeker-profile-link').text('Post a Job').attr('href', 'post-job.html');
+                        }
+                    }
+                },
+                error: function() {
+                    window.location.href = '../index.html';
+                }
+            });
+
+            // 2. Load Categories for Filter Dropdown
+            $.ajax({
+                url: '../api/controllers/jobs.php?action=categories',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        let options = '';
+                        response.data.forEach(function(cat) {
+                            options += `<option value="${cat.id}">${cat.name}</option>`;
+                        });
+                        $('#category-select').append(options);
+                    }
+                }
+            });
+
+            // 3. Load & Render Jobs
+            loadJobs();
+
+            // Submit Filters
+            $('#filters-form').submit(function(e) {
+                e.preventDefault();
+                loadJobs();
+            });
+
+            // Reset Filters
+            $('#reset-filters-btn').click(function() {
+                $('#filters-form')[0].reset();
+                loadJobs();
+            });
+
+            // Logout Action
+            $('#logout-btn').click(function() {
+                $.ajax({
+                    url: '../api/controllers/auth.php?action=logout',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        window.location.href = '../index.html';
+                    }
+                });
+            });
+
+            // Function to query jobs
+            function loadJobs() {
+                $('#jobs-container').html('');
+                $('#jobs-empty').addClass('d-none');
+                $('#jobs-alert').removeClass('d-none');
+
+                const q = $('#search-input').val().trim();
+                const category_id = $('#category-select').val();
+                const location = $('#location-input').val().trim();
+                const job_type = $('#job-type-select').val();
+
+                $.ajax({
+                    url: '../api/controllers/jobs.php',
+                    type: 'GET',
+                    data: {
+                        q: q,
+                        category_id: category_id,
+                        location: location,
+                        job_type: job_type
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#jobs-alert').addClass('d-none');
+                        if (response.status === 'success') {
+                            const jobs = response.data;
+                            $('#jobs-count').text(jobs.length);
+
+                            if (jobs.length === 0) {
+                                $('#jobs-empty').removeClass('d-none');
+                                return;
+                            }
+
+                            let cardsHtml = '';
+                            jobs.forEach(function(job) {
+                                // Dynamic Date Formatting
+                                const createdDate = new Date(job.created_at).toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                });
+
+                                cardsHtml += `
+                                    <div class="card border-0 shadow-sm p-4 animate-fade-in">
+                                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                            <div>
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <span class="badge bg-primary-subtle text-primary me-2 text-uppercase small px-2 py-1">${job.job_type}</span>
+                                                    <span class="text-secondary small fw-medium"><i class="fa-solid fa-tags me-1"></i>${job.category_name}</span>
+                                                </div>
+                                                <h5 class="card-title fw-bold mb-1 text-dark">${job.title}</h5>
+                                                <p class="text-secondary mb-2 small fw-medium">
+                                                    <i class="fa-solid fa-building me-1 text-muted"></i>${job.company_name} 
+                                                    <span class="mx-2">&bull;</span>
+                                                    <i class="fa-solid fa-location-dot me-1 text-muted"></i>${job.location}
+                                                </p>
+                                                <div class="text-success fw-semibold small">
+                                                    <i class="fa-solid fa-money-bill-wave me-1"></i>${job.salary_range ? job.salary_range : 'Salary not disclosed'}
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-column align-items-md-end justify-content-between h-100">
+                                                <a href="job-detail.html?id=${job.id}" class="btn btn-outline-primary btn-sm px-3 fw-semibold mb-2">View details <i class="fa-solid fa-chevron-right ms-1"></i></a>
+                                                <span class="text-muted small">${createdDate}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            $('#jobs-container').html(cardsHtml);
+                        } else {
+                            $('#jobs-count').text(0);
+                            $('#jobs-empty').removeClass('d-none');
+                        }
+                    },
+                    error: function() {
+                        $('#jobs-alert').addClass('d-none');
+                        $('#jobs-empty').removeClass('d-none');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
