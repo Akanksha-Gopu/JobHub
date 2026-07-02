@@ -12,7 +12,7 @@ function getPDO() {
         $pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $pdo;
-    // } catch (PDOException $e) {
+     } //catch (PDOException $e) {
     //     // Safe database error presentation for API clients
     //     header('Content-Type: application/json');
     //     echo json_encode([
