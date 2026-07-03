@@ -6,6 +6,9 @@ require_once __DIR__ . "/../config.php";
 require_once __DIR__ . "/../utils/db.php";
 require_once __DIR__ . "/../utils/functions.php";
 
+
+header("X-Session-ID: " . session_id());
+
 $db = new DB();
 
 // Get request parameters
@@ -60,21 +63,13 @@ if ($method === 'GET') {
     $params = [];
 
     // Apply Filter: Employer Owned Jobs (For Employer Dashboard)
-    // if ($employer_only === 1) {
-    //     if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'employer') {
-    //         sendResponse("error", "Access denied. Employer account required.");
-    //     }
-    //     $sql .= " AND j.employer_id = :employer_id";
-    //     $params['employer_id'] = $_SESSION['user_id'];
-    // }
     if ($employer_only === 1) {
-
-    sendResponse("success", "Debug", [
-        "session" => $_SESSION,
-        "role_check" => isset($_SESSION['role']) ? $_SESSION['role'] : "NOT SET",
-        "user_check" => isset($_SESSION['user_id']) ? $_SESSION['user_id'] : "NOT SET"
-    ]);
-
+        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'employer') {
+            sendResponse("error", "Access denied. Employer account required.");
+        }
+        $sql .= " AND j.employer_id = :employer_id";
+        $params['employer_id'] = $_SESSION['user_id'];
+    }
 }
 
 
