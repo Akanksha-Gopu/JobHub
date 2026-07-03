@@ -87,3 +87,14 @@ INSERT INTO categories (name) VALUES
 ('Data Science & Analytics'),
 ('Product Management'),
 ('UI/UX Design');
+
+-- 6. User Tokens Table
+-- Stores SHA-256 hashed user session tokens
+CREATE TABLE IF NOT EXISTS user_tokens (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    token_hash VARCHAR(64) UNIQUE NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP NOT NULL
+);
+

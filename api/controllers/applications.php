@@ -1,20 +1,19 @@
 <?php
 // Applications API Controller
 
-// Always load config first to ensure session is started
+// Always load config first
 require_once __DIR__ . "/../config.php";
 require_once __DIR__ . "/../utils/db.php";
 require_once __DIR__ . "/../utils/functions.php";
+require_once __DIR__ . "/../utils/auth.php";
 
 $db = new DB();
 
-// Auth Guard: All actions require an active session
-if (!isset($_SESSION['user_id'])) {
-    sendResponse("error", "Authentication required.");
-}
+// Auth Guard: All actions require authentication
+$currentUser = requireAuth();
 
-$userId = $_SESSION['user_id'];
-$userRole = $_SESSION['role'];
+$userId = $currentUser['id'];
+$userRole = $currentUser['role'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 // --- GET REQUESTS: VIEW APPLICATIONS ---

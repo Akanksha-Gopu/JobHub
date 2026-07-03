@@ -1,13 +1,11 @@
 <?php
 // Jobs API Controller
 
-// Always load config first to ensure session is started
+// Always load config first
 require_once __DIR__ . "/../config.php";
 require_once __DIR__ . "/../utils/db.php";
 require_once __DIR__ . "/../utils/functions.php";
-
-
-header("X-Session-ID: " . session_id());
+require_once __DIR__ . "/../utils/auth.php";
 
 $db = new DB();
 
@@ -64,11 +62,12 @@ if ($method === 'GET') {
 
     // Apply Filter: Employer Owned Jobs (For Employer Dashboard)
     if ($employer_only === 1) {
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'employer') {
+        $currentUser = requireAuth();
+        if ($currentUser['role'] !== 'employer') {
             sendResponse("error", "Access denied. Employer account required.");
         }
         $sql .= " AND j.employer_id = :employer_id";
-        $params['employer_id'] = $_SESSION['user_id'];
+        $params['employer_id'] = $currentUser['id'];
     }
 
 
@@ -114,12 +113,10 @@ if ($method === 'GET') {
 if ($method === 'POST') {
     
     // Auth Guard: User must be authenticated and must be an Employer (or Admin)
-    if (!isset($_SESSION['user_id'])) {
-        sendResponse("error", "Authentication required to perform this action.");
-    }
+    $currentUser = requireAuth();
     
-    $role = $_SESSION['role'];
-    $userId = $_SESSION['user_id'];
+    $role = $currentUser['role'];
+    $userId = $currentUser['id'];
     
     if ($role !== 'employer' && $role !== 'admin') {
         sendResponse("error", "Unauthorized access. Employer privileges required.");

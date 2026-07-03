@@ -1,11 +1,11 @@
 <?php
 // Authentication API Controller
 
-// Always load config first to ensure session is started before any output
+// Always load config first
 require_once __DIR__ . "/../config.php";
 require_once __DIR__ . "/../utils/db.php";
 require_once __DIR__ . "/../utils/functions.php";
-header("X-Session-ID: " . session_id());
+require_once __DIR__ . "/../utils/auth.php";
 
 $db = new DB();
 
@@ -123,21 +123,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $db->query("SELECT full_name, company_name FROM profiles WHERE user_id = :user_id");
         $profile = $db->first(['user_id' => $user['id']]);
 
-        // Start session & save identity
-        $_SESSION['user_id']   = $user['id'];
-        $_SESSION['role']      = $user['role'];
-        $_SESSION['full_name'] = $profile ? $profile['full_name'] : '';
+        // Generate stateless token
+        $token = generateToken($user['id']);
 
-        sendResponse("success", "Login successful!", [
-            "id"        => $user['id'],
-            "email"     => $user['email'],
-            "role"      => $user['role'],
-            "full_name" => $_SESSION['full_name']
+        header('Content-Type: application/json');
+        echo json_encode([
+            "status" => "success",
+            "token"  => $token,
+            "user"   => [
+                "id"        => (int)$user['id'],
+                "email"     => $user['email'],
+                "role"      => $user['role'],
+                "full_name" => $profile ? $profile['full_name'] : ''
+            ]
         ]);
+        exit();
 
     } elseif ($action === 'logout') {
-        session_unset();
-        session_destroy();
+        logout();
         sendResponse("success", "Logged out successfully.");
     }
 }
@@ -147,7 +150,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // =============================================
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if ($action === 'me') {
-        if (isset($_SESSION['user_id'])) {
+        $currentUser = validateToken();
+        if ($currentUser) {
             $db->query("
                 SELECT u.id, u.email, u.role, p.full_name, p.phone, p.bio,
                        p.company_name, p.company_website, p.resume_path, p.skills
@@ -155,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 LEFT JOIN profiles p ON u.id = p.user_id
                 WHERE u.id = :user_id
             ");
-            $user = $db->first(['user_id' => $_SESSION['user_id']]);
+            $user = $db->first(['user_id' => $currentUser['id']]);
 
             if ($user) {
                 sendResponse("success", "Session active.", $user);

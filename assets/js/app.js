@@ -37,9 +37,11 @@ $(document).ready(function () {
       dataType: "json",
       success: function (response) {
         if (response.status === "success") {
-          showAlert("success", response.message + " Redirecting...");
+          // Store token in localStorage
+          localStorage.setItem('token', response.token);
+          showAlert("success", response.message || "Login successful! Redirecting...");
           setTimeout(function () {
-            redirectUser(response.data.role);
+            redirectUser(response.user.role);
           }, 1000);
         } else {
           showAlert("danger", response.message);

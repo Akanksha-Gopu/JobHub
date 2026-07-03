@@ -1,20 +1,19 @@
 <?php
 // Users Profile API Controller
 
-// Always load config first to ensure session is started
+// Always load config first
 require_once __DIR__ . "/../config.php";
 require_once __DIR__ . "/../utils/db.php";
 require_once __DIR__ . "/../utils/functions.php";
+require_once __DIR__ . "/../utils/auth.php";
 
 $db = new DB();
 
-// Auth Guard
-if (!isset($_SESSION['user_id'])) {
-    sendResponse("error", "Authentication required.");
-}
+// Auth Guard: All actions require authentication
+$currentUser = requireAuth();
 
-$userId = $_SESSION['user_id'];
-$userRole = $_SESSION['role'];
+$userId = $currentUser['id'];
+$userRole = $currentUser['role'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
@@ -119,8 +118,6 @@ if ($method === 'POST') {
                 ]);
             }
 
-            // Update session display name
-            $_SESSION['full_name'] = $fullName;
             sendResponse("success", "Profile updated successfully!");
         }
 
@@ -147,8 +144,6 @@ if ($method === 'POST') {
                 'user_id' => $userId
             ]);
 
-            // Update session display name
-            $_SESSION['full_name'] = $fullName;
             sendResponse("success", "Company profile updated successfully!");
         }
     } catch (Exception $e) {
