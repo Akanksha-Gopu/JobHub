@@ -74,14 +74,14 @@ if ($method === 'POST') {
 
                 // Verify upload folder
                 if (!is_dir(UPLOAD_DIR)) {
-                    mkdir(UPLOAD_DIR, 0755, true);
+                    @mkdir(UPLOAD_DIR, 0755, true);
                 }
 
                 $fileExt     = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
                 $newFileName = 'resume_' . $userId . '_' . time() . '.' . $fileExt;
                 $destination = UPLOAD_DIR . $newFileName;
 
-                if (move_uploaded_file($file['tmp_name'], $destination)) {
+                if (@move_uploaded_file($file['tmp_name'], $destination)) {
                     $resumePath = 'assets/uploads/resumes/' . $newFileName;
                 }
             }

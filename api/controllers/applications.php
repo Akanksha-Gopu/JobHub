@@ -159,7 +159,7 @@ if ($method === 'POST') {
 
             // Double check upload directory exists
             if (!is_dir(UPLOAD_DIR)) {
-                mkdir(UPLOAD_DIR, 0755, true);
+                @mkdir(UPLOAD_DIR, 0755, true);
             }
 
             // $fileExtension already assigned (with strtolower) at validation step above.
@@ -167,7 +167,7 @@ if ($method === 'POST') {
             $newFileName = 'resume_' . $userId . '_' . time() . '_' . uniqid() . '.' . $fileExtension;
             $destination = UPLOAD_DIR . $newFileName;
 
-            if (move_uploaded_file($file['tmp_name'], $destination)) {
+            if (@move_uploaded_file($file['tmp_name'], $destination)) {
                 // Store relative path in database
                 $resumePath = 'assets/uploads/resumes/' . $newFileName;
             } else {
