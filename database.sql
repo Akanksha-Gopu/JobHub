@@ -98,3 +98,5 @@ CREATE TABLE IF NOT EXISTS user_tokens (
     expires_at TIMESTAMP NOT NULL
 );
 
+SELECT * FROM user_tokens;
+

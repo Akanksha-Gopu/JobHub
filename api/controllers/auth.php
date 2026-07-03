@@ -150,26 +150,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // =============================================
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if ($action === 'me') {
-        $currentUser = validateToken();
-        if ($currentUser) {
-            $db->query("
-                SELECT u.id, u.email, u.role, p.full_name, p.phone, p.bio,
-                       p.company_name, p.company_website, p.resume_path, p.skills
-                FROM users u
-                LEFT JOIN profiles p ON u.id = p.user_id
-                WHERE u.id = :user_id
-            ");
-            $user = $db->first(['user_id' => $currentUser['id']]);
+        $currentUser = requireAuth();
+        $db->query("
+            SELECT u.id, u.email, u.role, p.full_name, p.phone, p.bio,
+                   p.company_name, p.company_website, p.resume_path, p.skills
+            FROM users u
+            LEFT JOIN profiles p ON u.id = p.user_id
+            WHERE u.id = :user_id
+        ");
+        $user = $db->first(['user_id' => $currentUser['id']]);
 
-            if ($user) {
-                sendResponse("success", "Session active.", $user);
-            } else {
-                // Session exists but user/profile not found in DB
-                sendResponse("error", "User account not found. Please log in again.");
-            }
+        if ($user) {
+            sendResponse("success", "Session active.", $user);
+        } else {
+            sendResponse("error", "User account not found. Please log in again.");
         }
-        // No active session
-        sendResponse("error", "Unauthenticated. Please log in.");
     }
 }
 
