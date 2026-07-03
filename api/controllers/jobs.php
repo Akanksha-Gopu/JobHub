@@ -60,13 +60,24 @@ if ($method === 'GET') {
     $params = [];
 
     // Apply Filter: Employer Owned Jobs (For Employer Dashboard)
+    // if ($employer_only === 1) {
+    //     if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'employer') {
+    //         sendResponse("error", "Access denied. Employer account required.");
+    //     }
+    //     $sql .= " AND j.employer_id = :employer_id";
+    //     $params['employer_id'] = $_SESSION['user_id'];
+    // }
     if ($employer_only === 1) {
-        if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'employer') {
-            sendResponse("error", "Access denied. Employer account required.");
-        }
-        $sql .= " AND j.employer_id = :employer_id";
-        $params['employer_id'] = $_SESSION['user_id'];
-    }
+
+    sendResponse("success", "Debug", [
+        "session" => $_SESSION,
+        "role_check" => isset($_SESSION['role']) ? $_SESSION['role'] : "NOT SET",
+        "user_check" => isset($_SESSION['user_id']) ? $_SESSION['user_id'] : "NOT SET"
+    ]);
+
+}
+
+
 
     // Apply Filter: Search Query (keyword match title or description)
     // Note: Use two separate named params — PDO does not support the same
