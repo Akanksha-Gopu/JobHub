@@ -2,46 +2,59 @@
 
 ## Overview
 
-JobHub is a full-stack job board application that connects employers with job seekers. Employers can post jobs and manage applicants, while job seekers can search jobs, apply with resumes, and manage their profiles.
+JobHub is a full-stack job board application that connects employers with job seekers. Employers can create and manage job listings, while job seekers can search for jobs, apply with resumes, and manage their profiles.
+
+The application is built using PHP, PostgreSQL, Bootstrap, jQuery, and deployed on Vercel using Neon PostgreSQL.
 
 ---
 
-## Features
+# Features
 
-### Authentication
+## Authentication
 
 - User Registration
 - User Login
-- Session Management
-- Role-Based Access (Employer & Job Seeker)
+- Stateless Bearer Token Authentication
+- Role-Based Access Control (Employer & Job Seeker)
+- Automatic Authentication Validation
+- Secure Logout
+- Password Hashing
 
-### Job Seeker
+## Job Seeker Features
 
-- Browse available jobs
-- View job details
-- Apply for jobs
-- Upload resume (PDF)
-- Manage profile
+- Browse Jobs
+- Search Jobs
+- View Job Details
+- Apply for Jobs
+- Upload Resume (PDF)
+- Manage Profile
+- Dashboard
 
-### Employer
+## Employer Features
 
 - Employer Dashboard
-- Post new jobs
-- View applicants
-- Manage job listings
+- Create Job Listings
+- Update Job Listings
+- Delete Job Listings
+- View Applicants
+- Manage Posted Jobs
 
-### Validation
+## Validation & Security
 
-- Client-side form validation
+- Client-side validation
 - Server-side validation
-- Error handling
-- Secure session management
+- Bearer Token Authentication
+- Password Hashing
+- PDO Prepared Statements
+- SQL Injection Protection
+- Input Sanitization
+- Error Handling
 
 ---
 
-## Technology Stack
+# Technology Stack
 
-### Frontend
+## Frontend
 
 - HTML5
 - CSS3
@@ -49,25 +62,28 @@ JobHub is a full-stack job board application that connects employers with job se
 - JavaScript
 - jQuery
 
-### Backend
+## Backend
 
-- PHP
+- PHP 8.5
+- PDO
+- REST-style API
 
-### Database
+## Database
 
 - PostgreSQL
+- Neon Database
 
-### DevOps
+## DevOps
 
 - Git
 - GitHub
-- GitHub Actions (CI)
-- Vercel (Deployment)
+- GitHub Actions
+- Vercel
 - Neon PostgreSQL
 
 ---
 
-## Project Structure
+# Project Structure
 
 ```
 JobHub/
@@ -75,7 +91,8 @@ JobHub/
 ├── api/
 │   ├── controllers/
 │   ├── utils/
-│   └── config.php
+│   ├── config.php
+│   └── database.sql
 │
 ├── assets/
 │   ├── css/
@@ -84,40 +101,51 @@ JobHub/
 │
 ├── views/
 │
-├── database.sql
+├── .github/workflows/
+├── vercel.json
 ├── index.html
 └── README.md
 ```
 
 ---
 
-## Installation
+# Installation
 
-### Clone Repository
+## Clone Repository
 
 ```bash
-git clone https://github.com/Akanksha-Gopu/JobHub.git
+git clone https://github.com/yourusername/JobHub.git
 ```
 
-### Open Project
+## Navigate
 
 ```bash
 cd JobHub
 ```
 
-### Configure Database
+## Configure Database
 
-1. Create a PostgreSQL database.
-2. Import `database.sql`.
-3. Update database credentials in `api/config.php`.
+Create a PostgreSQL database and import:
 
-### Run PHP Server
+```
+database.sql
+```
+
+Update:
+
+```
+api/config.php
+```
+
+or configure environment variables if deploying.
+
+## Run Locally
 
 ```bash
 php -S localhost:8000
 ```
 
-Open:
+Open
 
 ```
 http://localhost:8000
@@ -125,30 +153,96 @@ http://localhost:8000
 
 ---
 
-## CI/CD
+# Authentication
 
-This project includes a GitHub Actions workflow that automatically validates the repository on every push.
+The application uses Stateless Bearer Token Authentication.
+
+Authentication Flow
+
+1. User logs in.
+2. Backend validates credentials.
+3. A secure token is generated.
+4. The token is securely stored in the database as a SHA-256 hash.
+5. The raw token is returned to the client.
+6. The frontend stores the token in Local Storage.
+7. Every API request automatically includes:
+
+```
+Authorization: Bearer <token>
+```
+
+8. Protected APIs validate the token before processing requests.
 
 ---
 
-## Deployment
+# CI/CD
 
-- Frontend hosted using Vercel.
-- PostgreSQL database hosted on Neon.
+GitHub Actions automatically:
+
+- Validate repository
+- Execute workflow on every push
+- Deploy latest version to Vercel
 
 ---
 
-## Future Improvements
+# Deployment
 
-- Email verification
-- Password reset
-- Advanced job search
-- Admin dashboard
-- Company logo uploads
+Application Hosting
+
+- Vercel Serverless Functions
+
+Database
+
+- Neon PostgreSQL
+
+Authentication
+
+- Stateless Bearer Token Authentication
+
+---
+
+# Security
+
+Implemented security measures include:
+
+- Password Hashing
+- SHA-256 Token Hashing
+- Prepared Statements (PDO)
+- SQL Injection Protection
+- Input Validation
+- Role-Based Authorization
+- Token Expiration
+- Secure Logout
+
+---
+
+# Future Improvements
+
+- Email Verification
+- Password Reset
+- Job Bookmarking
 - Notifications
+- Company Logos
+- Advanced Filters
+- Pagination
+- Admin Analytics
 
 ---
 
-## Author
+# AI Assistance
+
+AI tools were used for:
+
+- UI design
+- Feature planning
+- Documentation
+- CI/CD workflow generation
+- Code refinement
+
+Application architecture, backend logic, authentication, testing, debugging, deployment, and final verification were completed by the developer.
+
+---
+
+# Author
 
 Akanksha Gopu

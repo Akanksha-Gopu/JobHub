@@ -2,7 +2,7 @@
 
 ## Overview
 
-JobHub is a full-stack job board application that enables employers to post job opportunities and job seekers to search and apply for jobs through an intuitive web interface.
+JobHub is a full-stack job portal that enables employers to publish job openings and job seekers to search and apply through a secure web application.
 
 ---
 
@@ -10,41 +10,44 @@ JobHub is a full-stack job board application that enables employers to post job 
 
 ## Job Seeker
 
-A job seeker can:
-
-- Register an account
-- Log in securely
-- Browse available jobs
-- View detailed job descriptions
-- Apply for jobs
-- Upload a resume (PDF)
-- Manage their profile
-- Access a personalized dashboard
+- Register
+- Login
+- Browse Jobs
+- Search Jobs
+- View Job Details
+- Apply for Jobs
+- Upload Resume
+- Manage Profile
+- Dashboard
 
 ---
 
 ## Employer
 
-An employer can:
-
-- Register as an employer
-- Log in securely
-- Access the employer dashboard
-- Post new job openings
-- View applicants
-- Manage job postings
+- Register
+- Login
+- Dashboard
+- Create Jobs
+- Edit Jobs
+- Delete Jobs
+- View Applicants
+- Manage Job Listings
 
 ---
 
 # Authentication
 
-The application includes:
+The application implements Stateless Bearer Token Authentication.
+
+Features include:
 
 - User Registration
 - User Login
-- Session Management
-- Role-based authentication
-- Logout functionality
+- Bearer Token Generation
+- Automatic Token Validation
+- Role-Based Authorization
+- Secure Logout
+- Token Expiration
 
 ---
 
@@ -52,83 +55,83 @@ The application includes:
 
 Employers can:
 
-- Create job postings
-- Enter job title
-- Company name
-- Job description
-- Salary
-- Location
-- Employment type
+- Create Job Listings
+- Edit Jobs
+- Delete Jobs
+- Manage Applicants
 
-Job seekers can:
+Job Seekers can:
 
-- Search jobs
-- View job details
-- Submit applications
+- Search Jobs
+- View Details
+- Submit Applications
 
 ---
 
 # Resume Upload
 
-Applicants can upload resumes in PDF format.
+Applicants can upload PDF resumes.
 
-Validation includes:
+Validation
 
-- PDF only
-- Maximum file size: 5 MB
+- PDF Only
+- Maximum Size 5 MB
 
 ---
 
 # Validation
 
-Client-side validation includes:
+Client Side
 
-- Required fields
-- Email validation
-- Password confirmation
-- Form completeness
+- Required Fields
+- Email Validation
+- Password Validation
+- Form Validation
 
-Server-side validation includes:
+Server Side
 
 - Authentication
-- Duplicate email prevention
-- Secure request handling
+- Duplicate Email Detection
+- Input Validation
+- Request Validation
 
 ---
 
-# User Experience (UX)
+# User Experience
 
-The application includes:
-
-- Responsive Bootstrap design
-- Modern authentication interface
-- Dashboard navigation
-- Success and error alerts
-- Clean form layouts
-- Mobile-friendly pages
+- Responsive Bootstrap Interface
+- Employer Dashboard
+- Job Seeker Dashboard
+- Mobile Friendly
+- Success Alerts
+- Error Alerts
+- Fast Search
 
 ---
 
 # Security
 
-Implemented security features include:
-
-- PHP Sessions
-- Password hashing
-- Prepared Statements (PDO)
-- SQL Injection protection
-- Input validation
+- Stateless Bearer Token Authentication
+- SHA-256 Token Hashing
+- Password Hashing
+- PDO Prepared Statements
+- SQL Injection Protection
+- Authorization Header Validation
+- Input Sanitization
+- Secure Logout
 
 ---
 
 # Database
 
-PostgreSQL stores:
+PostgreSQL stores
 
 - Users
+- Profiles
 - Jobs
+- Categories
 - Applications
-- Employer information
+- Authentication Tokens
 
 ---
 
@@ -144,11 +147,13 @@ PostgreSQL stores:
 
 ## Backend
 
-- PHP
+- PHP 8.5
+- PDO
 
 ## Database
 
 - PostgreSQL
+- Neon
 
 ## DevOps
 
@@ -159,27 +164,38 @@ PostgreSQL stores:
 
 ---
 
+# Deployment
+
+The application is deployed using
+
+- Vercel Serverless Functions
+- Neon PostgreSQL
+- GitHub Actions CI Pipeline
+- Stateless Bearer Token Authentication
+
+---
+
 # Future Improvements
 
-- Email verification
-- Password reset
-- Job bookmarking
+- Email Verification
+- Password Reset
 - Notifications
-- Admin dashboard
-- Company logos
-- Search filters
+- Company Logos
+- Saved Jobs
+- Advanced Search Filters
 - Pagination
+- Admin Dashboard
 
 ---
 
 # AI Assistance
 
-This project was developed with AI assistance for:
+AI tools assisted with:
 
-- UI design
-- Feature planning
+- UI Design
+- Feature Planning
 - Documentation
-- CI workflow generation
-- Code refinement
+- CI/CD Pipeline
+- Code Review
 
-The application logic, testing, deployment preparation, and integration were completed and verified by the developer.
+Business logic, authentication implementation, testing, debugging, deployment, and integration were completed and verified by the developer.
