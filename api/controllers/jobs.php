@@ -70,7 +70,7 @@ if ($method === 'GET') {
         $sql .= " AND j.employer_id = :employer_id";
         $params['employer_id'] = $_SESSION['user_id'];
     }
-}
+
 
 
 
